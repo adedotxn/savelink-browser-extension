@@ -6,7 +6,7 @@
       "default_title": "Savelink's Browser Extension",
       "default_popup": "index.html"
     },
-    "permissions": ["activeTab"],
+    "permissions": ["activeTab", "identity", "identity.email"],
     "content_scripts": [
       {
         "matches": ["https://*/*", "http://*/*"],
