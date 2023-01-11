@@ -1,0 +1,36 @@
+.main {
+  background-color: var(--background);
+  width: 24.75rem;
+  height: 10.5rem;
+  display: grid;
+  place-items: center;
+  color: var(--text-color);
+}
+
+.description {
+  display: grid;
+  place-items: center;
+}
+
+.description p {
+  margin-top: .2rem;
+}
+
+.login {
+  margin-top: .4rem;
+}
+
+.login>button {
+  cursor: pointer;
+  padding: .3rem .5rem;
+  border: 1px solid var(--border-line);
+  background-color: var(--accent-color);
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.login>button:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  border-radius: .5rem;
+}
