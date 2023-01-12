@@ -1,7 +1,7 @@
 .main {
   background-color: var(--background);
   width: 24.75rem;
-  height: 10.5rem;
+  height: 12.5rem;
   display: grid;
   place-items: center;
   color: var(--text-color);
@@ -14,13 +14,31 @@
 
 .description p {
   margin-top: .2rem;
+  text-align: center;
+  font-size: .8rem;
 }
 
-.login {
+.description p a {
+  text-decoration: underline;
+  color: rgb(255, 255, 255);
+}
+
+.inputs {
+  margin-top: .3rem;
+  display: grid;
+  gap: .5rem;
+}
+
+.inputs input {
+  width: 20.75rem;
+
+}
+
+.save {
   margin-top: .4rem;
 }
 
-.login>button {
+.save>button {
   cursor: pointer;
   padding: .3rem .5rem;
   border: 1px solid var(--border-line);
@@ -29,7 +47,7 @@
   font-weight: 500;
 }
 
-.login>button:hover {
+.save>button:hover {
   -webkit-transform: scale(1.05);
   transform: scale(1.05);
   border-radius: .5rem;

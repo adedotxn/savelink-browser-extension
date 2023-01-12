@@ -2,43 +2,49 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.css";
-import { useSession, signIn, signOut } from "next-auth/react";
+// import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [pageData, setPageData] = useState({
     url: "",
     title: "",
   });
   const [currentEmail, setCurrentEmail] = useState("");
   const [category, setCategory] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLinkSaving = async () => {
-    const response = await fetch(
-      `http://savelink.vercel.app/api/${currentEmail}/cr8`,
-      {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          identifier: `${currentEmail}`,
-          title: `${pageData.title}`,
-          url: `${pageData.url}`,
-          category: `${category}`,
-          bookmarked: false,
-          time: Date.now(),
-        }),
-      }
-    );
+    await fetch(`http://savelink.vercel.app/api/${currentEmail}/cr8`, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        identifier: `${currentEmail}`,
+        title: `${pageData.title}`,
+        url: `${pageData.url}`,
+        category: `${category}`,
+        bookmarked: false,
+        time: Date.now(),
+      }),
+    })
+      .then((response) => {
+        response.json();
+        setSaved(true);
+      })
+      .catch((err) => {
+        setError(err.message);
+        console.log(err);
+      });
 
     console.log("Done?");
-    return response.json();
   };
 
   useEffect(() => {
@@ -60,6 +66,16 @@ export default function Home() {
     console.log(setPageData);
   }, []);
 
+  useEffect(() => {
+    if (saved) {
+      setTimeout(() => {
+        setSaved(false);
+        setPageData({ title: "", url: "" });
+        setCategory("");
+      }, 2000);
+    }
+  }, [saved]);
+
   return (
     <>
       <Head>
@@ -75,11 +91,11 @@ export default function Home() {
         <div className={styles.description}>
           <h1>Savelink</h1>
           <p>
-            Link will be saved under : {currentEmail} as that&apos;s the google
-            account you&apos;re logged in as
+            Link will be saved under : {currentEmail} in{" "}
+            <a href="http://savelink.vercel.app">Savelink</a>
           </p>
 
-          <div className="inputs">
+          <div className={styles.inputs}>
             <input
               type="text"
               onChange={(e) =>
@@ -104,15 +120,21 @@ export default function Home() {
             />
           </div>
 
-          <div className={styles.login}>
-            <button
-              onClick={() => {
-                handleLinkSaving();
-              }}
-            >
-              Save
-            </button>
+          <div className={styles.save}>
+            {saved ? (
+              <button>Saved ✅</button>
+            ) : (
+              <button
+                onClick={() => {
+                  handleLinkSaving();
+                }}
+              >
+                Save
+              </button>
+            )}
           </div>
+
+          {error !== "" && <p>{error}</p>}
         </div>
       </main>
     </>

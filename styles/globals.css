@@ -48,7 +48,7 @@ body {
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb)); */
   background-color: white;
   width: 24.75rem;
-  height: 10.5rem;
+  height: 12.5rem;
   border: 2px solid black;
 }
 
