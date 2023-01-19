@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev && npm-watch",  
-    "lint:build": "mv out/_next out/assets && sed -i 's/\\\\/_next/\\\\/assets/g' out/**.html",  
+    "dev": "next dev && npm-watch",
+    "lint:build": "mv out/_next out/assets && sed -i 's/\\\\/_next/\\\\/assets/g' out/**.html",
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
-  "watch": {    
-    "build": {      
+  "watch": {
+    "build": {
       "patterns": [
         "styles/",
         "pages/",
@@ -19,16 +19,16 @@
         "next.config.js"
       ],
       "ignore": [
-        "out",        
-        "node_modules",        
-        ".next",        
-        ".vscode"      
+        "out",
+        "node_modules",
+        ".next",
+        ".vscode"
       ],
-       "extensions": [ 
-        "js", 
+      "extensions": [
+        "js",
         "json"
-      ]    
-    }  
+      ]
+    }
   },
   "dependencies": {
     "@next/font": "13.1.1",
@@ -38,7 +38,6 @@
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "next": "13.1.1",
-    "next-auth": "^4.18.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.4"

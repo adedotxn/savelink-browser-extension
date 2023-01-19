@@ -13,12 +13,14 @@ export default function Home() {
     url: "",
     title: "",
   });
-  const [currentEmail, setCurrentEmail] = useState("");
-  const [category, setCategory] = useState("");
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState("");
+  const [currentEmail, setCurrentEmail] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [saved, setSaved] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleLinkSaving = async () => {
+  const handleLinkSaving = async (): Promise<void> => {
+    setIsLoading(true);
     await fetch(`http://savelink.vercel.app/api/${currentEmail}/cr8`, {
       method: "POST",
       credentials: "same-origin",
@@ -37,9 +39,11 @@ export default function Home() {
     })
       .then((response) => {
         response.json();
+        setIsLoading(false);
         setSaved(true);
       })
       .catch((err) => {
+        setIsLoading(false);
         setError(err.message);
         console.log(err);
       });
@@ -112,7 +116,7 @@ export default function Home() {
               value={pageData.url}
             />
 
-            {/**Enable options for getting user category straight from db with a new api route in savelink/api codebase */}
+            {/** I could enable fetcging user categories from the api but that exposes a lot of things, so i'll be holding off till i strengthen the backend security */}
             <input
               type="text"
               onChange={(e) => setCategory(e.target.value)}
@@ -123,6 +127,10 @@ export default function Home() {
           <div className={styles.save}>
             {saved ? (
               <button>Saved ✅</button>
+            ) : isLoading ? (
+              <button>
+                Saving <span className={styles.loader}></span>
+              </button>
             ) : (
               <button
                 onClick={() => {
