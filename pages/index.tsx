@@ -1,18 +1,13 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.css";
-// import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-// const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
-  // const { data: session, status } = useSession();
   const [pageData, setPageData] = useState({
     url: "",
     title: "",
   });
+
   const [currentEmail, setCurrentEmail] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [saved, setSaved] = useState<boolean>(false);
@@ -48,8 +43,12 @@ export default function Home() {
         console.log(err);
       });
 
-    console.log("Done?");
+    // console.log("Done.");
   };
+
+  /** uses the chrome api to get current webpage details
+   * and current account signed in to chrome.
+   */
 
   useEffect(() => {
     chrome.tabs &&
