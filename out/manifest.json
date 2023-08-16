@@ -1,0 +1,17 @@
+{
+    "name": "Savelink's Browser Extension",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "action": {
+      "default_title": "Savelink's Browser Extension",
+      "default_popup": "index.html"
+    },
+    "permissions": ["activeTab", "identity", "identity.email"],
+    "content_scripts": [
+      {
+        "matches": ["https://*/*", "http://*/*"],
+        "js": ["inject.js"]
+      }
+    ],
+    "host_permissions": ["<all_urls>"]
+  }

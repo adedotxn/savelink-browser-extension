@@ -1,0 +1,9 @@
+{
+    "name": "Savelink's Browser Extension",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "browser_action": {
+      "default_title": "Savelink's Browser Extension",
+      "default_popup": "index.html"
+    }
+  }

@@ -8,15 +8,23 @@ export default function Home() {
     title: "",
   });
 
-  const [currentEmail, setCurrentEmail] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+  const [identifier, setIdentifier] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [categories, setCategories] = useState<string[] | null>(null);
   const [saved, setSaved] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (inputValue.includes(",")) {
+      const array = inputValue.split(",").map((item) => item.trim());
+      setCategories(array);
+    }
+  }, [inputValue]);
+
   const handleLinkSaving = async (): Promise<void> => {
     setIsLoading(true);
-    await fetch(`http://savelink.vercel.app/api/${currentEmail}/cr8`, {
+    await fetch(`http://savelink.vercel.app/api/${identifier}/save`, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -24,10 +32,10 @@ export default function Home() {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        identifier: `${currentEmail}`,
+        identifier: `${identifier}`,
         title: `${pageData.title}`,
         url: `${pageData.url}`,
-        category: `${category}`,
+        categories: categories ?? ["saved"],
         bookmarked: false,
         time: Date.now(),
       }),
@@ -40,7 +48,7 @@ export default function Home() {
       .catch((err) => {
         setIsLoading(false);
         setError(err.message);
-        console.log(err);
+        console.error(err);
       });
 
     // console.log("Done.");
@@ -64,9 +72,8 @@ export default function Home() {
     chrome.identity &&
       chrome.identity.getProfileUserInfo((user) => {
         const userEmail = user.email;
-        setCurrentEmail(userEmail);
+        setIdentifier(userEmail);
       });
-    console.log(setPageData);
   }, []);
 
   useEffect(() => {
@@ -74,7 +81,8 @@ export default function Home() {
       setTimeout(() => {
         setSaved(false);
         setPageData({ title: "", url: "" });
-        setCategory("");
+        setInputValue("");
+        setCategories([]);
       }, 2000);
     }
   }, [saved]);
@@ -94,7 +102,7 @@ export default function Home() {
         <div className={styles.description}>
           <h1>Savelink</h1>
           <p>
-            Link will be saved under : {currentEmail} in{" "}
+            Link will be saved under : {identifier} in{" "}
             <a href="http://savelink.vercel.app">Savelink</a>
           </p>
 
@@ -115,11 +123,11 @@ export default function Home() {
               value={pageData.url}
             />
 
-            {/** I could enable fetcging user categories from the api but that exposes a lot of things, so i'll be holding off till i strengthen the backend security */}
             <input
               type="text"
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="Type in category"
+              onChange={(e) => setInputValue(e.target.value)}
+              value={inputValue}
+              placeholder="Type in categories you want to save this link in"
             />
           </div>
 
